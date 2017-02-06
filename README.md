@@ -82,7 +82,7 @@ A basic `config.json` example that will auth all domains to a single server.
 
 ```
 {
-    "defaults": {
+    "default": {
         "pop3": {
             "ip": "YOUR_POP3_IP",
             "port": YOUR_POP3_PORT
@@ -116,14 +116,14 @@ Based on example 1 you can specify seperate domains to be auth'ed to another ser
 }
 ```
 
-(Please note that this configuration does not contain any port configuration. They will be applied from "defaults" defined in `config.json`).
+(Please note that this configuration does not contain any port configuration. They will be applied from "default" defined in `config.json`).
 
 ### example 3
 If you have a lot of domains using the server from example 2, it might be a good idea to define the example 2 configuration as a `serverX` template in `config.json`
 
 ```
 {
-    "defaults": {
+    "default": {
         ...
     },
     "templates": {
