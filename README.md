@@ -64,7 +64,7 @@ A configuration is based on (up to) 3 parts, *default*, *templates* and *proxy c
 ```
 
 #### domain config
-almost the same as **proxy config* but it supports *template*:
+almost the same as *proxy config* but it supports *template*:
 
 ```
 {
@@ -160,7 +160,7 @@ And even template references can be overridden in your domain configuration:
 ```
 mail {
     auth_http http://SERVER_IP:8278;
-    
+
     # you are encuraged to configure auth_http_header (not required)
     # if you do so - remember to configure the '-auth-key' flag
     auth_http_header X-Auth-Key "YOUR_SECRET_STRING";
