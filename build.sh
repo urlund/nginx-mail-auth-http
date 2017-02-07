@@ -3,7 +3,7 @@ VERSION=`cat VERSION`
 GOOS=linux
 GOARCH=amd64
 BIN_NAME="nginx-mail-auth-http"
-BIN_PATH="bin/$BIN_NAME-$GOOS-$GOARCH-$VERSION"
+BIN_PATH="bin/$VERSION/$BIN_NAME-$GOOS-$GOARCH"
 GIT_REPO="github.com/urlund/$BIN_NAME"
 
 rm -rf $BIN_NAME
