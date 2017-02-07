@@ -20,6 +20,8 @@ Usage of nginx-mail-auth-http:
     	Path where '-config-file' (and conf.d) can be found (default "/etc/nginx-mail-auth-http")
   -listen string
     	Address to handle requests on incoming connections (default ":8278")
+  -version
+        Show version
 ```
 
 ## configuration
