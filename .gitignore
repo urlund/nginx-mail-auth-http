@@ -1,2 +1,4 @@
+bin*
 config.json
 conf.d
+nginx-mail-auth-http
