@@ -5,6 +5,7 @@ import (
 	"flag"
 	// "fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -19,6 +20,7 @@ var (
 	listen           string
 	authKey          string
 	authHeader       string
+	version          bool
 	config           *types.Config
 	proxyConfigCache map[string]*types.ProxyConfig
 	timeout          time.Duration
@@ -37,7 +39,13 @@ func init() {
 	flag.StringVar(&configPath, "config-path", "/etc/nginx-mail-auth-http", "Path where '-config-file' (and conf.d) can be found")
 	flag.StringVar(&authKey, "auth-key", "", "This header can be used as the shared secret to verify that the request comes from nginx")
 	flag.StringVar(&authHeader, "auth-header", "Auth-Key", "Checks the specified header in requests sent to the authentication server")
+	flag.BoolVar(&version, "version", version, "Show version")
 	flag.Parse()
+
+	if version {
+		fmt.Println("version: 1.0.0")
+		os.Exit(0)
+	}
 
 	var err error
 	timeout, err = time.ParseDuration(cacheTTL)
