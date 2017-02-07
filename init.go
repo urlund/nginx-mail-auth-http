@@ -21,14 +21,14 @@ var (
 	authKey          string
 	authHeader       string
 	version          bool
-	config           *types.Config
-	proxyConfigCache map[string]*types.ProxyConfig
+	config           types.Config
+	proxyConfigCache map[string]types.ProxyConfig
 	timeout          time.Duration
 	cleanup          time.Duration
 )
 
 func init() {
-	proxyConfigCache = map[string]*types.ProxyConfig{}
+	proxyConfigCache = map[string]types.ProxyConfig{}
 
 	// why 8278? because is an unsigned port @ iana.org
 	// (and, 25 + 110 + 143 = 278 and starting with 8 because 8080 is starting with 8 and typically used for a personally hosted web server)
@@ -66,9 +66,5 @@ func init() {
 	err = json.Unmarshal(jsonBlob, &config)
 	if err != nil {
 		panic(err)
-	}
-
-	if config.Default == nil {
-		panic("default config is required")
 	}
 }

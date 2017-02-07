@@ -13,7 +13,7 @@ import (
 	"github.com/urlund/nginx-mail-auth-http/types"
 )
 
-func debugConfig(p *types.ProxyConfig) {
+func debugConfig(p interface{}) {
 	x, _ := json.Marshal(p)
 	fmt.Println(string(x))
 }
@@ -28,9 +28,9 @@ func handleResponse(w http.ResponseWriter, r *http.Request, message string) {
 	}
 }
 
-func getProxyConfig(domain string) (*types.ProxyConfig, string) {
+func getProxyConfig(domain string) (types.ProxyConfig, string) {
 	proxyConfig := config.Default
-	domainConfig := &types.ProxyConfig{}
+	var domainConfig types.ProxyConfig
 
 	jsonBlob, err := ioutil.ReadFile(filepath.Join(configPath, "conf.d", domain))
 	if err != nil {
@@ -45,25 +45,30 @@ func getProxyConfig(domain string) (*types.ProxyConfig, string) {
 	// check if we need to apply a template
 	if domainConfig.Template != "" {
 		if templateConfig, templateFound := config.Templates[domainConfig.Template]; templateFound == true {
-			proxyConfig.Apply(templateConfig)
+			proxyConfig.Apply(&templateConfig)
 		}
 	}
 
 	// ...
-	proxyConfig.Apply(domainConfig)
+	proxyConfig.Apply(&domainConfig)
 
 	return proxyConfig, ""
 }
 
 func getAuthServerAndPort(w http.ResponseWriter, r *http.Request, domain string) (err string) {
 	proxyConfig, cacheFound := proxyConfigCache[domain]
-	if cacheFound == false || time.Now().After(proxyConfig.Timeout) {
-		cacheFound = false
+
+	if cacheFound == false || (cacheFound == true && time.Now().After(proxyConfig.Timeout)) {
 		// get proxy config
 		proxyConfig, err = getProxyConfig(domain)
 		if err != "" {
 			return err
 		}
+
+		proxyConfigCache[domain] = proxyConfig
+		w.Header().Add("X-Cache", "MISS")
+	} else {
+		w.Header().Add("X-Cache", "HIT")
 	}
 
 	// get auth ip and port
@@ -79,13 +84,6 @@ func getAuthServerAndPort(w http.ResponseWriter, r *http.Request, domain string)
 	// extend cache timeout
 	proxyConfig.Timeout = time.Now().Add(timeout)
 	proxyConfigCache[domain] = proxyConfig
-
-	// cache entry if needed
-	if cacheFound == false {
-		w.Header().Add("X-Cache", "MISS")
-	} else {
-		w.Header().Add("X-Cache", "HIT")
-	}
 
 	// set auth headers
 	w.Header().Add("Auth-Server", ip)
