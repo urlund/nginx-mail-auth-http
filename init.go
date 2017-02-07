@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	// "fmt"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
