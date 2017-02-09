@@ -1,5 +1,5 @@
 # nginx-mail-auth-http
-A [Go](https://golang.org/) HTTP authentication server to `ngx_mail_auth_http_module`. Auth lookups will be cached to minimize workload.
+A [Go](https://golang.org/) HTTP authentication server for `ngx_mail_auth_http_module`. Auth lookups will be cached to minimize workload.
 
 ### command options
 
