@@ -81,6 +81,9 @@ func getAuthServerAndPort(w http.ResponseWriter, r *http.Request, domain string)
 		return fmt.Sprintf("unable to find proxy server or port for protocol: '%s'", protocol)
 	}
 
+	mu.Lock()
+	defer mu.Unlock()
+
 	// extend cache timeout
 	proxyConfig.Timeout = time.Now().Add(timeout)
 	proxyConfigCache[domain] = proxyConfig

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/urlund/nginx-mail-auth-http/types"
@@ -25,6 +26,7 @@ var (
 	proxyConfigCache map[string]types.ProxyConfig
 	timeout          time.Duration
 	cleanup          time.Duration
+	mu               sync.Mutex
 )
 
 func init() {
@@ -43,7 +45,7 @@ func init() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("version: 1.0.0")
+		fmt.Println("version: 1.0.1")
 		os.Exit(0)
 	}
 
