@@ -9,7 +9,6 @@ GIT_REPO="github.com/urlund/$BIN_NAME"
 rm -rf $BIN_NAME
 
 sed -i '' -e "s/\"version: .*\"/\"version: $VERSION\"/g" init.go
-sed -i '' -e "s/download\/.*\/nginx/download\/$VERSION\/nginx/g" Dockerfile
 
 # check if docker is installed
 if [ $(which docker > /dev/null 2>&1; echo $?) -ne 0 ]; then
@@ -25,3 +24,5 @@ fi
 
 # run docker with build cmd
 docker run --rm -it -v "$GOPATH":/work -e "GOPATH=/work" -w /work/src/$GIT_REPO -e GOOS=$GOOS -e GOARCH=$GOARCH golang:latest go build -o $BIN_PATH
+
+docker build -t urlund/nginx-mail-auth-http -t urlund/nginx-mail-auth-http:$VERSION --build-arg VERSION=$VERSION .
